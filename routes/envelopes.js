@@ -5,16 +5,39 @@ const router = express.Router();
 
 const envelopes = [
     {
-        Category: "Gas",
-        paymentDue: 50,
-        currentBalance: 0
+        category: "Gas",
+        budget: 50,
+        id: 0
     }
 ]
-// All routes start with /envelope
+
+// All routes start with /envelopes
+
+// Create an envelope for a new budget
+router.post('/create',(req,res) => {
+    console.log('Creating a new envelope');
+    //Accessing information from the URL 
+    const categoryName = req.query.category;
+    const budgetAmount = Number(req.query.budget);
+    const idNumber = envelopes.length;
+    envelopes.push({category:categoryName,budget:budgetAmount,id:idNumber});
+    console.log(envelopes);
+    //Sending back a response
+    res.status(201).send(`A new envelope has been created for ${categoryName} with a budget of $${budgetAmount}!`);
+});
+
+// Display all current envelopes
 router.get('/', (req,res) => {
     console.log(envelopes);
     res.send(envelopes);
 })
+
+// Display envelope by ID number
+router.get('/:id', (req,res) => {
+    const id = req.params.id;
+    
+    res.status(200).send(envelopes[id]);
+});
 
 
 export default router;
