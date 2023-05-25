@@ -1,5 +1,5 @@
 import express from 'express';
-
+import * as functions from '../envelopesFunctions.js';
 //Initializing my router
 const router = express.Router();
 
@@ -35,8 +35,13 @@ router.get('/', (req,res) => {
 // Display envelope by ID number
 router.get('/:id', (req,res) => {
     const id = req.params.id;
+    const envelope = functions.findEnvelope(envelopes,id);
+    if (envelope == -1) {
+        res.status(404).send('Envelope requested could not be found');
+    } else {
+        res.status(200).send(envelope);
+    }
     
-    res.status(200).send(envelopes[id]);
 });
 
 

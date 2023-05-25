@@ -5,4 +5,8 @@ function findEnvelope(envelopes,reqId) {
             return envelopes[x];
         }
     }
+    console.log("Envelope not found!");
+    return -1;
 }
+
+export {findEnvelope};
