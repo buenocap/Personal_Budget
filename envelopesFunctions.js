@@ -11,4 +11,6 @@ function findEnvelope(envelopes,reqId) {
     return -1;
 }
 
+//This function will delete an envelope and update IDs accordingly
+
 export {findEnvelope};

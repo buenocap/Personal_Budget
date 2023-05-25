@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import * as functions from '../envelopesFunctions.js';
 //Initializing my router
 const router = express.Router();
@@ -8,6 +8,16 @@ const envelopes = [
         category: "Gas",
         budget: 50,
         id: 0
+    },
+    {
+        category: "Rent",
+        budget: 1250,
+        id: 1
+    },
+    {
+        category: "Car",
+        budget: 250,
+        id: 2
     }
 ]
 
@@ -16,9 +26,9 @@ const envelopes = [
 // Create an envelope for a new budget
 router.post('/create',(req,res) => {
     console.log('Creating a new envelope');
-    //Accessing information from the URL 
-    const categoryName = req.query.category;
-    const budgetAmount = Number(req.query.budget);
+    //Accessing information from the body
+    const categoryName = req.body.category;
+    const budgetAmount = req.body.budget;
     const idNumber = envelopes.length; //id will increment as the size array increases
     envelopes.push({category:categoryName,budget:budgetAmount,id:idNumber});
     console.log(envelopes);
@@ -29,7 +39,7 @@ router.post('/create',(req,res) => {
 // Display all current envelopes
 router.get('/', (req,res) => {
     console.log(envelopes);
-    res.status.apply(200).send(envelopes);
+    res.status(200).send(envelopes);
 })
 
 // Display envelope by ID number
@@ -48,7 +58,7 @@ router.get('/:id', (req,res) => {
 router.put('/edit/:id', (req,res) => {
     //Locating envelope
     const id = req.params.id;
-    if(functions.findEnvelope(envelopes,id)!= 1) {
+    if(functions.findEnvelope(envelopes,id)!= -1) {
         //If found update envelope with new information
         envelopes[id].category = req.body.category;
         envelopes[id].budget = req.body.budget;
@@ -61,6 +71,27 @@ router.put('/edit/:id', (req,res) => {
         //If the envelope doesn't exist handle error
         res.status(404).send('The envelope being modified cannot be found!');
     }
+});
+
+// Transfer funds from one envelope to another
+router.put('/edit/:id/:budget', (req,res) => {
+});
+
+// Delete an existing envelope
+router.delete('/edit/:id', (req,res) => {
+    const id = req.params.id;
+    if(functions.findEnvelope(envelopes,id) != -1) {
+        //Remove object from array
+        envelopes.splice(id,1);
+        //Reconfiguring IDs
+        for (let index = 0; index < envelopes.length; index++) {
+            envelopes[index].id = index;
+        }
+        res.status(202).send('Envelope has been deleted');
+    } else {
+        res.status(404).send('Error');
+    }
+    
 });
 
 
