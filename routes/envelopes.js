@@ -19,7 +19,7 @@ router.post('/create',(req,res) => {
     //Accessing information from the URL 
     const categoryName = req.query.category;
     const budgetAmount = Number(req.query.budget);
-    const idNumber = envelopes.length;
+    const idNumber = envelopes.length; //id will increment as the size array increases
     envelopes.push({category:categoryName,budget:budgetAmount,id:idNumber});
     console.log(envelopes);
     //Sending back a response
@@ -29,7 +29,7 @@ router.post('/create',(req,res) => {
 // Display all current envelopes
 router.get('/', (req,res) => {
     console.log(envelopes);
-    res.send(envelopes);
+    res.status.apply(200).send(envelopes);
 })
 
 // Display envelope by ID number
@@ -42,6 +42,21 @@ router.get('/:id', (req,res) => {
         res.status(200).send(envelope);
     }
     
+});
+
+// Edit an existing envelope
+router.put('/edit/:id', (req,res) => {
+    //Locating envelope
+    if(functions.findEnvelope(envelopes,id != -1)) {
+        //If found update envelope with new information
+        envelopes[id].category = req.body.category;
+        envelopes[id].budget = req.body.category;
+        res.status(201).send(envelopes[id]);
+        
+    } else {
+        //If the envelope doesn't exist handle error
+        res.status(404).send('The envelope being modified cannot be found!');
+    }
 });
 
 

@@ -1,3 +1,5 @@
+
+//This function will retreive an envelope by doing a simple linear search in the id
 function findEnvelope(envelopes,reqId) {
     for (let x = 0; x < envelopes.length; x++) {
         if (envelopes[x].id == reqId)
