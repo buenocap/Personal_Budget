@@ -47,11 +47,15 @@ router.get('/:id', (req,res) => {
 // Edit an existing envelope
 router.put('/edit/:id', (req,res) => {
     //Locating envelope
-    if(functions.findEnvelope(envelopes,id != -1)) {
+    const id = req.params.id;
+    if(functions.findEnvelope(envelopes,id)!= 1) {
         //If found update envelope with new information
         envelopes[id].category = req.body.category;
-        envelopes[id].budget = req.body.category;
-        res.status(201).send(envelopes[id]);
+        envelopes[id].budget = req.body.budget;
+        console.log(envelopes);
+        //Message send
+        let msg = `Successfully Updated: ${envelopes[id].category}\n`;
+        res.status(201).send({msg,envelopes});
         
     } else {
         //If the envelope doesn't exist handle error
