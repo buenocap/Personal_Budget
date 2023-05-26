@@ -74,7 +74,15 @@ router.put('/edit/:id', (req,res) => {
 });
 
 // Transfer funds from one envelope to another
-router.put('/edit/:id/:budget', (req,res) => {
+router.put('/edit/:envelopeOne/:envelopeTwo/:transfer', (req,res) => {
+    const envelopeOne = req.params.envelopeOne;
+    const envelopeTwo = req.params.envelopeTwo;
+    const transferAmount = Number(req.params.transfer);
+    //Math to correctly change budget value
+    envelopes[envelopeOne].budget = envelopes[envelopeOne].budget - transferAmount;
+    envelopes[envelopeTwo].budget = envelopes[envelopeTwo].budget + transferAmount;
+    console.log(envelopes);
+    res.status(200).send(`$${transferAmount} from ${envelopes[envelopeOne].category} has been transferred to ${envelopes[envelopeTwo].category}.`);
 });
 
 // Delete an existing envelope
