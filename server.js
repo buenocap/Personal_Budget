@@ -10,7 +10,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/envelopes', envelopeRoutes);
 
-app.get('/', (req,res) => {res.send('Hello from Homepage.')});
 
 app.listen(PORT, () => {
     console.log(`Server Running on: http://localhost:${PORT}`);
